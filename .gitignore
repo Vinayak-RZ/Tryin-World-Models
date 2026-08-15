@@ -9,3 +9,4 @@ build/
 .ruff_cache/
 sandbox/mode1_anomaly/artifacts/
 sandbox/open_models/artifacts/
+sandbox/mode2_imagine/artifacts/

@@ -25,6 +25,7 @@ open = [
 
 [project.scripts]
 mode1-anomaly = "sandbox.mode1_anomaly.run:main"
+mode2-imagine = "sandbox.mode2_imagine.run:main"
 
 [tool.setuptools.packages.find]
 include = ["sandbox*"]
