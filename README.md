@@ -18,6 +18,8 @@ Latest proxy run: [research/maps/wm-experiment-2026-08-15-mode1.md](research/map
 
 Latest **real weights** run: [research/maps/wm-experiment-2026-08-15-open-models.md](research/maps/wm-experiment-2026-08-15-open-models.md) — DINOv2-small + head and Chronos-Bolt Tiny. Both **hold-shadow**. Chronos is usable; DINO-on-sparklines is not. Details: [research/MODELS.md](research/MODELS.md).
 
+Latest **Mode 2** run: [research/maps/wm-experiment-2026-08-15-mode2.md](research/maps/wm-experiment-2026-08-15-mode2.md) — RSSM + GRU imagine next load given a process setpoint. Both beat action-blind TOW-P on 1-step. **hold-shadow.** Display only.
+
 ## What is here
 
 | Path | Role |
@@ -28,6 +30,7 @@ Latest **real weights** run: [research/maps/wm-experiment-2026-08-15-open-models
 | `research/maps/` | Dated experiment notes |
 | `sandbox/mode1_anomaly/` | Offline Mode 1 simulation (PCA+Ridge proxy) |
 | `sandbox/open_models/` | Chronos-Bolt + DINO-WM-style frozen encoder + head |
+| `sandbox/mode2_imagine/` | Action-conditioned RSSM + GRU (Mode 2 what-if) |
 | `research/MODELS.md` | Which weights we use vs robot-pixel checkpoints |
 
 ## What is not here
@@ -42,6 +45,7 @@ pytest
 python -m sandbox.mode1_anomaly.run          # PCA+Ridge proxy only
 python -m pip install -e ".[open]"
 python -m sandbox.open_models.run --real     # DINOv2-small + Chronos-Bolt Tiny
+python -m sandbox.mode2_imagine.run          # RSSM + GRU, action → next load
 ```
 
 Product commitment: **none**.

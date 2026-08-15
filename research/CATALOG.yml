@@ -41,6 +41,19 @@ entries:
     mode: null
     status: curated
 
+  - id: wm-experiment-2026-08-15-mode2
+    type: experiment
+    path: research/maps/wm-experiment-2026-08-15-mode2.md
+    title: Mode 2 — action-conditioned next-state imagination
+    mode: 2
+    status: completed
+    recommendation: hold-shadow
+    product_commitment: none
+    plants_beaten: 2
+    models:
+      - rssm
+      - gru_dynamics
+
   - id: wm-experiment-2026-08-15-open-models
     type: experiment
     path: research/maps/wm-experiment-2026-08-15-open-models.md

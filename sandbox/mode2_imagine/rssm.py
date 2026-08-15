@@ -180,7 +180,7 @@ class RSSMWorldModel:
             raise RuntimeError("RSSMWorldModel.fit() was not called")
         start = max(0, end - self.seq_len + 1)
         feats = self._norm_obs(traj)[start : end + 1]
-        act = traj.action[start:end, None]
+        act = traj.action[start : end + 1, None]
         obs = torch.tensor(feats, dtype=torch.float32, device=self.device).unsqueeze(1)
         action = torch.tensor(act, dtype=torch.float32, device=self.device).unsqueeze(1)
         posts, _, _, _, _, h = self.model.observe(obs, action)

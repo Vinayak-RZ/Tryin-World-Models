@@ -66,3 +66,18 @@ See [maps/wm-experiment-2026-08-15-open-models.md](maps/wm-experiment-2026-08-15
 | PCA+Ridge proxy | 0 / 2 | Conservative, misses events |
 
 **hold-shadow.** Chronos is the only open model worth putting a head / LoRA on next. DINOv3 will not fix sparkline-as-image.
+
+## Mode 2 (2026-08-15) — action → next plant state
+
+See [maps/wm-experiment-2026-08-15-mode2.md](maps/wm-experiment-2026-08-15-mode2.md).
+
+Two **trained** world models (not DINO checkpoints) on a synthetic plant with a process setpoint:
+
+| Model | Role | 1-step vs TOW-P | Counterfactual |
+|-------|------|-----------------|----------------|
+| Compact RSSM | PlaNet/Dreamer-style, vector obs | beats on both plants | good at 4 h; collapses at 1 day |
+| Action-conditioned GRU | second WM | **best** 1-step | **best** what-if |
+| Action-blind TOW-P | champion | — | fails the knob |
+| Persistence | naive | looks good factually | fails the knob |
+
+**hold-shadow.** Imagined kW is display only. The GRU is the one to take to real tags next.
