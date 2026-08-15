@@ -14,9 +14,9 @@ This repo is the throwaway sandbox named in the world-models pack. The pack stay
 
 Default first try: **Mode 1 — prediction-error anomaly** vs EWMA / CUSUM on TOW-P-shaped residuals.
 
-Latest proxy run: [research/maps/wm-experiment-2026-08-15-mode1.md](research/maps/wm-experiment-2026-08-15-mode1.md) — **hold-shadow**. That run used PCA+Ridge, **not** a published world model.
+Latest proxy run: [research/maps/wm-experiment-2026-08-15-mode1.md](research/maps/wm-experiment-2026-08-15-mode1.md) — PCA+Ridge only.
 
-What we actually load, and how DINO-WM / DINOv3 relate: [research/MODELS.md](research/MODELS.md).
+Latest **real weights** run: [research/maps/wm-experiment-2026-08-15-open-models.md](research/maps/wm-experiment-2026-08-15-open-models.md) — DINOv2-small + head and Chronos-Bolt Tiny. Both **hold-shadow**. Chronos is usable; DINO-on-sparklines is not. Details: [research/MODELS.md](research/MODELS.md).
 
 ## What is here
 

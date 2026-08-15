@@ -53,3 +53,16 @@ python -m sandbox.open_models.run --real
 ```
 
 Fake backends (no downloads) are the default for tests.
+
+## Latest real-weight run (2026-08-15)
+
+See [maps/wm-experiment-2026-08-15-open-models.md](maps/wm-experiment-2026-08-15-open-models.md).
+
+| Model | Plants beaten | How it behaved |
+|-------|---------------|----------------|
+| Residual SPC champion | — | precision@k ≈ 0.98, delay ≈ 0 |
+| Chronos-Bolt Tiny | 0 / 2 | Caught every event, FPR ~4–5%, worse ranking/delay |
+| DINOv2-small + Ridge head | 0 / 2 | FPR ~99.8% — photo DINO on sparklines is not a plant WM |
+| PCA+Ridge proxy | 0 / 2 | Conservative, misses events |
+
+**hold-shadow.** Chronos is the only open model worth putting a head / LoRA on next. DINOv3 will not fix sparkline-as-image.

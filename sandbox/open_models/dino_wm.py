@@ -103,6 +103,7 @@ class DinoWmSurpriseDetector:
     ewma_lam: float = 0.25
     ridge: Ridge | None = None
     train_score_quantile: float = 0.0
+    _score_cache: dict[int, np.ndarray] = field(default_factory=dict, repr=False)
 
     def _embed(self, traj: Trajectory) -> tuple[np.ndarray, np.ndarray]:
         idx = render_indices(traj.n_steps, self.lookback, self.stride)
@@ -117,20 +118,31 @@ class DinoWmSurpriseDetector:
         if pair.size < 8:
             raise RuntimeError("not enough DINO train pairs")
         self.ridge = Ridge(alpha=self.ridge_alpha).fit(z[pair], z[pair + 1])
-        scores = self.score(traj)
-        self.train_score_quantile = float(np.quantile(scores[traj.train_mask], 0.98))
+        pred = self.ridge.predict(z)
+        err = np.zeros(idx.shape[0], dtype=np.float64)
+        err[1:] = np.linalg.norm(z[1:] - pred[:-1], axis=1)
+        if err.shape[0] > 1:
+            err[0] = err[1]
+        filled = ewma(_fill_scores(traj.n_steps, idx, err), self.ewma_lam)
+        self._score_cache = {id(traj): filled}
+        self.train_score_quantile = float(np.quantile(filled[traj.train_mask], 0.98))
         return self
 
     def score(self, traj: Trajectory) -> np.ndarray:
         if self.ridge is None:
             raise RuntimeError("DinoWmSurpriseDetector.fit() was not called")
+        cached = self._score_cache.get(id(traj))
+        if cached is not None:
+            return cached
         idx, z = self._embed(traj)
         pred = self.ridge.predict(z)
         err = np.zeros(idx.shape[0], dtype=np.float64)
         err[1:] = np.linalg.norm(z[1:] - pred[:-1], axis=1)
         if err.shape[0] > 1:
             err[0] = err[1]
-        return ewma(_fill_scores(traj.n_steps, idx, err), self.ewma_lam)
+        filled = ewma(_fill_scores(traj.n_steps, idx, err), self.ewma_lam)
+        self._score_cache[id(traj)] = filled
+        return filled
 
     def alarms(self, traj: Trajectory, threshold: float | None = None) -> np.ndarray:
         cut = self.train_score_quantile if threshold is None else threshold

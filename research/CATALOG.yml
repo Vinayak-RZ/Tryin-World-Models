@@ -41,6 +41,19 @@ entries:
     mode: null
     status: curated
 
+  - id: wm-experiment-2026-08-15-open-models
+    type: experiment
+    path: research/maps/wm-experiment-2026-08-15-open-models.md
+    title: Mode 1 — real open models vs EWMA/CUSUM
+    mode: 1
+    status: completed
+    recommendation: hold-shadow
+    product_commitment: none
+    plants_beaten: 0
+    weights:
+      - facebook/dinov2-small
+      - amazon/chronos-bolt-tiny
+
   - id: wm-experiment-2026-08-15-mode1
     type: experiment
     path: research/maps/wm-experiment-2026-08-15-mode1.md

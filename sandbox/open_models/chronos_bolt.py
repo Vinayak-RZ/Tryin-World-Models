@@ -73,6 +73,7 @@ class ChronosSurpriseDetector:
     stride: int = 8
     ewma_lam: float = 0.25
     train_score_quantile: float = 0.0
+    _score_cache: dict[int, np.ndarray] = field(default_factory=dict, repr=False)
 
     def _eval_indices(self, n_steps: int) -> np.ndarray:
         first = self.context_len
@@ -88,13 +89,19 @@ class ChronosSurpriseDetector:
         return idx, np.abs(actual - pred)
 
     def fit(self, traj: Trajectory) -> ChronosSurpriseDetector:
+        self._score_cache.clear()
         scores = self.score(traj)
         self.train_score_quantile = float(np.quantile(scores[traj.train_mask], 0.98))
         return self
 
     def score(self, traj: Trajectory) -> np.ndarray:
+        cached = self._score_cache.get(id(traj))
+        if cached is not None:
+            return cached
         idx, err = self._raw_surprise(traj)
-        return ewma(_fill_scores(traj.n_steps, idx, err), self.ewma_lam)
+        filled = ewma(_fill_scores(traj.n_steps, idx, err), self.ewma_lam)
+        self._score_cache[id(traj)] = filled
+        return filled
 
     def alarms(self, traj: Trajectory, threshold: float | None = None) -> np.ndarray:
         cut = self.train_score_quantile if threshold is None else threshold
