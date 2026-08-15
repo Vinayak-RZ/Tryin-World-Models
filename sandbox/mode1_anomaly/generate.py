@@ -135,7 +135,7 @@ def default_plants() -> tuple[PlantConfig, PlantConfig]:
         temp_beta=2.2,
         noise_std=3.2,
         events=(
-            EventSpec(EVENT_DRIFT, start_step=9 * week + 12, duration_steps=2 * week, magnitude_kw=18.0),
+            EventSpec(EVENT_DRIFT, start_step=9 * week + 12, duration_steps=3 * STEPS_PER_DAY, magnitude_kw=18.0),
             EventSpec(EVENT_SENSOR, start_step=11 * week + 20, duration_steps=32, magnitude_kw=45.0),
             EventSpec(EVENT_UPSET, start_step=11 * week + 400, duration_steps=16, magnitude_kw=28.0),
         ),
@@ -147,7 +147,7 @@ def default_plants() -> tuple[PlantConfig, PlantConfig]:
         temp_beta=0.9,
         noise_std=4.0,
         events=(
-            EventSpec(EVENT_DRIFT, start_step=8 * week + 48, duration_steps=week + 96, magnitude_kw=14.0),
+            EventSpec(EVENT_DRIFT, start_step=8 * week + 48, duration_steps=3 * STEPS_PER_DAY, magnitude_kw=14.0),
             EventSpec(EVENT_UPSET, start_step=10 * week + 80, duration_steps=24, magnitude_kw=22.0),
             EventSpec(EVENT_SENSOR, start_step=11 * week + 200, duration_steps=40, magnitude_kw=38.0),
         ),

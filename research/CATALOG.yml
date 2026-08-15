@@ -33,3 +33,13 @@ entries:
     title: Missing stamped-external corpus
     mode: null
     status: stub
+
+  - id: wm-experiment-2026-08-15-mode1
+    type: experiment
+    path: research/maps/wm-experiment-2026-08-15-mode1.md
+    title: Mode 1 — prediction-error anomaly vs EWMA/CUSUM
+    mode: 1
+    status: completed
+    recommendation: hold-shadow
+    product_commitment: none
+    plants_beaten: 0

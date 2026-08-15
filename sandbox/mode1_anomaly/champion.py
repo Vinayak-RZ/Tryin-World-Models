@@ -75,34 +75,56 @@ def two_sided_cusum(values: np.ndarray, k: float) -> np.ndarray:
     return out
 
 
+def windowed_cusum(values: np.ndarray, k: float, window: int) -> np.ndarray:
+    """CUSUM on a trailing window so a finished shift does not latch forever."""
+    if window < 2:
+        raise ValueError("window must be >= 2")
+    out = np.empty(values.shape[0], dtype=np.float64)
+    for i in range(values.shape[0]):
+        start = max(0, i - window + 1)
+        out[i] = two_sided_cusum(values[start : i + 1], k)[-1]
+    return out
+
+
 @dataclass
 class ChampionDetector:
-    """Residual SPC: combine |EWMA| and CUSUM into one score."""
+    """Residual SPC: rank on |EWMA|; alarm if EWMA or CUSUM exceeds its train cut."""
 
     lam: float = 0.25
     cusum_k_sigma: float = 0.5
+    cusum_window: int = 48
     baseline: TimeOfWeekTempBaseline | None = None
     residual_std: float = 1.0
+    ewma_cut: float = 0.0
+    cusum_cut: float = 5.0
     train_score_quantile: float = 0.0
 
-    def fit(self, traj: Trajectory) -> ChampionDetector:
-        self.baseline = TimeOfWeekTempBaseline().fit(traj)
-        residual = traj.load_kw - self.baseline.predict(traj)
-        train_r = residual[traj.train_mask]
-        self.residual_std = float(np.std(train_r)) or 1.0
-        scores = self.score(traj)
-        self.train_score_quantile = float(np.quantile(scores[traj.train_mask], 0.98))
-        return self
-
-    def score(self, traj: Trajectory) -> np.ndarray:
+    def _standardized_residual(self, traj: Trajectory) -> np.ndarray:
         if self.baseline is None:
             raise RuntimeError("ChampionDetector.fit() was not called")
         residual = traj.load_kw - self.baseline.predict(traj)
-        z = residual / self.residual_std
-        ewma_abs = np.abs(ewma(z, self.lam))
-        cusum = two_sided_cusum(z, k=self.cusum_k_sigma)
-        return np.maximum(ewma_abs, cusum / 5.0)
+        return residual / self.residual_std
+
+    def fit(self, traj: Trajectory) -> ChampionDetector:
+        self.baseline = TimeOfWeekTempBaseline().fit(traj)
+        train_r = (traj.load_kw - self.baseline.predict(traj))[traj.train_mask]
+        self.residual_std = float(np.std(train_r)) or 1.0
+        z = self._standardized_residual(traj)
+        train_z = z[traj.train_mask]
+        ewma_abs = np.abs(ewma(train_z, self.lam))
+        cusum = windowed_cusum(train_z, k=self.cusum_k_sigma, window=self.cusum_window)
+        self.ewma_cut = float(np.quantile(ewma_abs, 0.98))
+        self.cusum_cut = max(float(np.quantile(cusum, 0.98)), 5.0)
+        self.train_score_quantile = self.ewma_cut
+        return self
+
+    def score(self, traj: Trajectory) -> np.ndarray:
+        z = self._standardized_residual(traj)
+        return np.abs(ewma(z, self.lam))
 
     def alarms(self, traj: Trajectory, threshold: float | None = None) -> np.ndarray:
-        cut = self.train_score_quantile if threshold is None else threshold
-        return self.score(traj) >= cut
+        z = self._standardized_residual(traj)
+        ewma_abs = np.abs(ewma(z, self.lam))
+        cusum = windowed_cusum(z, k=self.cusum_k_sigma, window=self.cusum_window)
+        ewma_cut = self.ewma_cut if threshold is None else threshold
+        return (ewma_abs >= ewma_cut) | (cusum >= self.cusum_cut)

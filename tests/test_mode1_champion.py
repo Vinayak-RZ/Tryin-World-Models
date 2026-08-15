@@ -6,6 +6,7 @@ from sandbox.mode1_anomaly.champion import (
     ewma,
     tow_bin,
     two_sided_cusum,
+    windowed_cusum,
 )
 from sandbox.mode1_anomaly.generate import STEPS_PER_DAY, PlantConfig, generate_plant
 
@@ -24,6 +25,14 @@ def test_cusum_rises_on_mean_shift() -> None:
     shifted = np.concatenate([null, rng.normal(3.0, 1.0, size=80)])
     score = two_sided_cusum(shifted, k=0.5)
     assert score[250:].max() > score[:200].max()
+
+
+def test_windowed_cusum_releases_after_shift() -> None:
+    x = np.concatenate([np.zeros(20), np.ones(30) * 4.0, np.zeros(80)])
+    latched = two_sided_cusum(x, k=0.5)
+    windowed = windowed_cusum(x, k=0.5, window=16)
+    assert latched[-1] > 10.0
+    assert windowed[-1] < 1.0
 
 
 def test_towp_recovers_bin_mean_on_noiseless_series() -> None:

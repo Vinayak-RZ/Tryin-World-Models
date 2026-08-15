@@ -14,6 +14,8 @@ This repo is the throwaway sandbox named in the world-models pack. The pack stay
 
 Default first try: **Mode 1 — prediction-error anomaly** vs EWMA / CUSUM on TOW-P-shaped residuals.
 
+Latest run: [research/maps/wm-experiment-2026-08-15-mode1.md](research/maps/wm-experiment-2026-08-15-mode1.md) — **hold-shadow**. The cheap next-step surprise proxy did not beat residual SPC on two synthetic plants. Product commitment: none.
+
 ## What is here
 
 | Path | Role |
