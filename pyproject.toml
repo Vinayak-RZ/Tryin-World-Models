@@ -15,6 +15,12 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
+open = [
+  "torch>=2.2",
+  "transformers>=4.44",
+  "chronos-forecasting>=1.5.0",
+  "pillow>=10.0",
+]
 
 [project.scripts]
 mode1-anomaly = "sandbox.mode1_anomaly.run:main"

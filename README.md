@@ -14,7 +14,9 @@ This repo is the throwaway sandbox named in the world-models pack. The pack stay
 
 Default first try: **Mode 1 — prediction-error anomaly** vs EWMA / CUSUM on TOW-P-shaped residuals.
 
-Latest run: [research/maps/wm-experiment-2026-08-15-mode1.md](research/maps/wm-experiment-2026-08-15-mode1.md) — **hold-shadow**. The cheap next-step surprise proxy did not beat residual SPC on two synthetic plants. Product commitment: none.
+Latest proxy run: [research/maps/wm-experiment-2026-08-15-mode1.md](research/maps/wm-experiment-2026-08-15-mode1.md) — **hold-shadow**. That run used PCA+Ridge, **not** a published world model.
+
+What we actually load, and how DINO-WM / DINOv3 relate: [research/MODELS.md](research/MODELS.md).
 
 ## What is here
 
@@ -24,7 +26,9 @@ Latest run: [research/maps/wm-experiment-2026-08-15-mode1.md](research/maps/wm-e
 | `research/CATALOG.yml` | Index of notes and experiment results |
 | `research/MISSING_CORPUS.md` | Linked `stamped-external` files that are not in this repo |
 | `research/maps/` | Dated experiment notes |
-| `sandbox/mode1_anomaly/` | Offline Mode 1 simulation (CPU only) |
+| `sandbox/mode1_anomaly/` | Offline Mode 1 simulation (PCA+Ridge proxy) |
+| `sandbox/open_models/` | Chronos-Bolt + DINO-WM-style frozen encoder + head |
+| `research/MODELS.md` | Which weights we use vs robot-pixel checkpoints |
 
 ## What is not here
 
@@ -35,7 +39,9 @@ The pack links a larger research monorepo (`stamped-external`): primers, PATHS, 
 ```bash
 python -m pip install -e ".[dev]"
 pytest
-python -m sandbox.mode1_anomaly.run
+python -m sandbox.mode1_anomaly.run          # PCA+Ridge proxy only
+python -m pip install -e ".[open]"
+python -m sandbox.open_models.run --real     # DINOv2-small + Chronos-Bolt Tiny
 ```
 
 Product commitment: **none**.

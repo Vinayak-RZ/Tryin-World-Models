@@ -8,3 +8,4 @@ build/
 .mypy_cache/
 .ruff_cache/
 sandbox/mode1_anomaly/artifacts/
+sandbox/open_models/artifacts/

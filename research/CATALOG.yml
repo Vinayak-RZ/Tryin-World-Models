@@ -34,6 +34,13 @@ entries:
     mode: null
     status: stub
 
+  - id: models-note
+    type: note
+    path: research/MODELS.md
+    title: Which world models this sandbox actually uses
+    mode: null
+    status: curated
+
   - id: wm-experiment-2026-08-15-mode1
     type: experiment
     path: research/maps/wm-experiment-2026-08-15-mode1.md
