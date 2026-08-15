@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tryin-world-models"
+version = "0.1.0"
+description = "FRONTIER sandbox for Stamped world-model shadow experiments"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy>=1.26",
+  "scikit-learn>=1.4",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+mode1-anomaly = "sandbox.mode1_anomaly.run:main"
+
+[tool.setuptools.packages.find]
+include = ["sandbox*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
