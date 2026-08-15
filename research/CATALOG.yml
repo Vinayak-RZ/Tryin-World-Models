@@ -1,0 +1,35 @@
+# Sandbox catalog for Tryin-World-Models.
+# Not the stamped-external CATALOG.yml SSOT. See MISSING_CORPUS.md.
+
+version: 1
+lane: FRONTIER
+updated: "2026-08-15"
+
+entries:
+  - id: pack-world-models-for-stamped
+    type: pack
+    path: research/packs/world-models-for-stamped/README.md
+    title: World-models pack for Stamped — one-folder entry
+    mode: null
+    status: curated
+
+  - id: pack-how-we-use-them
+    type: pack
+    path: research/packs/world-models-for-stamped/HOW_WE_USE_THEM.md
+    title: How Stamped can use world models — modes and attachment
+    mode: null
+    status: curated
+
+  - id: pack-agent-handoff
+    type: pack
+    path: research/packs/world-models-for-stamped/AGENT_HANDOFF.md
+    title: Agent handoff — try and simulate world models for Stamped
+    mode: null
+    status: curated
+
+  - id: missing-corpus
+    type: stub
+    path: research/MISSING_CORPUS.md
+    title: Missing stamped-external corpus
+    mode: null
+    status: stub
